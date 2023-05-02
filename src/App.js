@@ -1,7 +1,7 @@
 import { CurrencyRow } from './CurrencyRow';
 import { useState, useEffect } from 'react';
 
-const url = 'https://api.exchangerate.host/latest';
+const url = 'https://open.er-api.com/v6/latest/USD';
 
 function App() {
   const [currencyOptions, setCurrencyOptions] = useState([]);
@@ -25,12 +25,22 @@ function App() {
       .then((response) => response.json())
       .then((data) => {
         const firstCurrency = Object.keys(data.rates)[0];
-        setCurrencyOptions([data.base, ...Object.keys(data.rates)]);
-        setFromCurrency(data.base);
+        setCurrencyOptions([data.base_code, ...Object.keys(data.rates)]);
+        setFromCurrency(data.base_code);
         setToCurrency(firstCurrency);
         setExchangeRate(data.rates[firstCurrency]);
       });
   }, []);
+
+  const handleFromAmountChange = (e) => {
+    setAmount(e.target.value);
+    setAmountInFromCurrency(true);
+  };
+
+  const handleToAmountChange = (e) => {
+    setAmount(e.target.value);
+    setAmountInFromCurrency(true);
+  };
 
   return (
     <div className="App">
@@ -41,6 +51,7 @@ function App() {
           selectedCurrency={fromCurrency}
           onChangeCurrency={(e) => setFromCurrency(e.target.value)}
           amount={fromAmount}
+          onChangeAmount={handleFromAmountChange}
         />
         <div className="equals">=</div>
         <CurrencyRow
@@ -48,6 +59,7 @@ function App() {
           selectedCurrency={toCurrency}
           onChangeCurrency={(e) => setToCurrency(e.target.value)}
           amount={toAmount}
+          onChangeAmount={handleToAmountChange}
         />
       </div>
     </div>

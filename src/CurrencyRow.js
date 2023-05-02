@@ -3,10 +3,16 @@ export const CurrencyRow = ({
   selectedCurrency,
   onChangeCurrency,
   amount,
+  onChangeAmount,
 }) => {
   return (
     <div>
-      <input type="number" className="input" value={amount} />
+      <input
+        type="number"
+        className="input"
+        value={amount}
+        onChange={onChangeAmount}
+      />
       <select value={selectedCurrency} onChange={onChangeCurrency}>
         {currencyOptions.map((option, index) => (
           <option key={index} value={option}>
