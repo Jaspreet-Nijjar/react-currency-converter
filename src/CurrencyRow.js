@@ -1,9 +1,13 @@
-export const CurrencyRow = () => {
+export const CurrencyRow = ({ currencyOptions }) => {
   return (
     <div>
       <input type="number" className="input" />
       <select>
-        <option value="test">Test</option>
+        {currencyOptions.map((option, index) => (
+          <option key={index} value={option}>
+            {option}
+          </option>
+        ))}
       </select>
     </div>
   );
