@@ -19,6 +19,7 @@ body {
   border: 1px solid #d3d3d3;
   padding: 70px;
   border-radius: 5px;
+  max-width: 90%;
 }
 
 h1 {

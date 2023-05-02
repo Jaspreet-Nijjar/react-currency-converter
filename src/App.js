@@ -1,15 +1,15 @@
 import { CurrencyRow } from './CurrencyRow';
 import { useState, useEffect } from 'react';
 
-const url = 'https://open.er-api.com/v6/latest/USD';
+const url = 'https://open.er-api.com/v6/latest/EUR';
 
 function App() {
   const [currencyOptions, setCurrencyOptions] = useState([]);
-  const [fromCurrency, setFromCurrency] = useState([]);
-  const [toCurrency, setToCurrency] = useState([]);
+  const [fromCurrency, setFromCurrency] = useState();
+  const [toCurrency, setToCurrency] = useState();
   const [amount, setAmount] = useState(1);
   const [amountInFromCurrency, setAmountInFromCurrency] = useState(true);
-  const [exchangeRate, setExchangeRate] = useState('');
+  const [exchangeRate, setExchangeRate] = useState();
 
   let toAmount, fromAmount;
   if (amountInFromCurrency) {
@@ -24,13 +24,21 @@ function App() {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        const firstCurrency = Object.keys(data.rates)[0];
+        const firstCurrency = Object.keys(data.rates)[1];
         setCurrencyOptions([data.base_code, ...Object.keys(data.rates)]);
         setFromCurrency(data.base_code);
         setToCurrency(firstCurrency);
         setExchangeRate(data.rates[firstCurrency]);
       });
   }, []);
+
+  useEffect(() => {
+    if (fromCurrency != null && toCurrency != null) {
+      fetch(`${url}?base=${fromCurrency}&symbols=${toCurrency}`)
+        .then((res) => res.json())
+        .then((data) => setExchangeRate(data.rates[toCurrency]));
+    }
+  }, [fromCurrency, toCurrency]);
 
   const handleFromAmountChange = (e) => {
     setAmount(e.target.value);
