@@ -17,9 +17,13 @@ body {
 
 .container {
   border: 1px solid #d3d3d3;
-  padding: 70px;
-  border-radius: 5px;
-  max-width: 90%;
+  width: 100%;
+  padding: 60px 30px;
+
+  @media screen and (min-width: 960px) {
+    max-width: 960px;
+    margin: 0 auto;
+  }
 }
 
 h1 {
